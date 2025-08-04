@@ -5,6 +5,16 @@ const Registration: React.FC = () => {
     const [pass, setPass] = useState<string>('')
     const [isRegister, setIsRegister] = useState<boolean>(true)
 
+    const getTestApi = async () => {
+        fetch('https://rda-browser-server.onrender.com/weatherforecast')
+        .then(response => response.json())
+        .then(json => console.log(json))
+    }
+
+    useEffect(() => {
+        getTestApi()
+    }, [])
+
     return (
         <div>
             <div className="flex items-center justify-center h-screen bg-gray-100">
