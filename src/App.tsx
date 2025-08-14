@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import Landing from './Pages/Landing/Landing';
 import Registration from './Pages/Registration/Registration';
+import Onboarding from './Pages/Onboarding/Onboarding';
 
 
 function App() {
@@ -9,7 +10,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/Register" element={<Registration />} />
+        <Route path="/register" element={<Registration />} />
+        <Route path="/onboarding" element={<Onboarding />} />
       </Routes>
     </BrowserRouter>
      

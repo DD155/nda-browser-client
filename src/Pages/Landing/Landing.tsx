@@ -1,9 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const Landing: React.FC = () => {
   return (
     <div>
-        Home Page
+        <Link to="/register">Go to Register </Link> <br />
+        <Link to="/onboarding">Go to Onboarding </Link>
     </div>)
 };
 
