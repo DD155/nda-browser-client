@@ -1,33 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MdErrorOutline } from 'react-icons/md';
-
-type StrengthLevel = {
-    label:string,
-    color:string,
-    width:string
-}
-
-const getPasswordStrength = (password:string):StrengthLevel => {
-    const rules = [
-        password.length > 0,                
-        password.length >= 8,              
-        /[A-Z]/.test(password),            
-        /[0-9]/.test(password),            
-        /[^A-Za-z0-9]/.test(password),     // special char
-    ]
-    
-    const strength = rules.filter(Boolean).length
-      
-    const levels: Record<number, StrengthLevel> = {
-        0: { label: 'Empty',   color: 'bg-red-500',     width: '0%'},
-        1: { label: 'Invalid', color: 'bg-red-500',     width: '10%'},
-        2: { label: 'Weak',    color: 'bg-red-500',     width: '35%' },
-        3: { label: 'Okay',    color: 'bg-yellow-500',  width: '65%'},
-        4: { label: 'Okay',    color: 'bg-yellow-500',  width: '80%' },
-        5: { label: 'Strong',  color: 'bg-green-500',   width: '100%' },
-    }
-    return levels[strength]
-}
+import PasswordChecker from './PasswordChecker';
 
 const Registration: React.FC = () => {
     const [firstName, setFirsrtName] = useState<string>('')
@@ -36,9 +9,8 @@ const Registration: React.FC = () => {
     const [pass, setPass] = useState<string>('')
     const [verifyPass, setVerifyPass] = useState<string>('')
     const [isRegister, setIsRegister] = useState<boolean>(true) // toggle conditional fields
+    const [isValidPass, setIsValidPass] = useState<boolean>(false)
     
-    const passwordStrengthStyle:StrengthLevel = getPasswordStrength(pass)                                        
-
     const getTestApi = async () => {
         fetch('https://rda-browser-server.onrender.com/api/Accounts/', {
             method: 'GET'
@@ -48,7 +20,7 @@ const Registration: React.FC = () => {
     }
 
     const validateRegistration = () => {
-        if (passwordStrengthStyle.label === 'Strong' && verifyPass === pass) {
+        if (isValidPass && verifyPass === pass) {
             console.log(`
                 Email: ${email},
                 First Name: ${firstName},
@@ -58,6 +30,8 @@ const Registration: React.FC = () => {
             `)
         }
     }
+
+    console.log(isValidPass)
 
     useEffect(() => {
         getTestApi()
@@ -77,30 +51,17 @@ const Registration: React.FC = () => {
                             <div className='flex-1'>
                                 <input className='lg:p-2 w-full border rounded' placeholder="Last Name" value={lastName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setlastName(e.target.value)}></input>
                             </div>
-                        </div>  } 
+                        </div>  }
                         <div className='flex flex-col gap-y-4'> {/* Password Container */}
-                            <input type='password' placeholder = "Password" value={pass} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPass(e.target.value)} className='flex-1 lg:p-2 w-full border rounded-t'/>
-                            <div className='-mt-4 flex-1 h-2 w-full bg-gray-200'> 
-                                <div className={`h-2 rounded transition-all duration-300 ${passwordStrengthStyle.color}`} 
-                                style={{width:`${passwordStrengthStyle.width}`}}
-                                ></div>
-                            </div>
-                            { (pass.length > 0 && passwordStrengthStyle.label !== 'Strong') && 
-                            <div className='p-4 bg-red-100 rounded-lg'>
-                                <div className="flex items-center space-x-2">
-                                    <MdErrorOutline size={24}/> <p> Please check that your password includes these things: </p>
-                                </div>
-                                <ul className='list-disc pl-6'>
-                                    <li>At least 8 characters long</li>
-                                    <li>Contains a capital letter and number</li>
-                                    <li>Contains a symbol (!, @, #, $, %, etc.)</li>
-                                </ul>
-                            </div> 
-                            }      
+                        {isRegister &&
+                        <>
+                            <PasswordChecker password={pass} setPassword={setPass} setIsValidPass={setIsValidPass}/>
                             <input type='password' placeholder = "Verify Password" value={verifyPass} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVerifyPass(e.target.value)} className='flex-1 lg:p-2 w-full border rounded'/>
                             { ((verifyPass.length > 0) && pass !== verifyPass) && <p className='text-red-500'> Passwords do not match </p> }
+                        </>
+                        }
                         </div>
-                        <button onClick={validateRegistration} className='w-full bg-black text-white py-2 border rounded'> { isRegister ? 'Register' : 'Login' } </button>
+                        <button onClick={validateRegistration} className='w-full bg-black hover:scale-[1.02] transition-transform duration-200 text-white py-2 border rounded'> { isRegister ? 'Register' : 'Login' } </button>
                         <div>
                             <h6 className='inline'> { isRegister ? 'Already have an account?' : 'Need a new account?' } </h6> 
                             <button onClick={() => setIsRegister(!isRegister)} className='inline'> 
