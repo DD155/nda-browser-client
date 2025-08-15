@@ -4,12 +4,11 @@ import { MdErrorOutline } from "react-icons/md"
 type PasswordCheckerProps = {
     password: string,
     setPassword: React.Dispatch<React.SetStateAction<string>>,
-    //isValidPass: boolean,
     setIsValidPass: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 type StrengthLevel = {
-    label:string,
+    valid:boolean,
     color:string,
     width:string
 }
@@ -26,12 +25,12 @@ const getPasswordStrength = (password:string):StrengthLevel => {
     const strength = rules.filter(Boolean).length
       
     const levels: Record<number, StrengthLevel> = {
-        0: { label: 'Empty',   color: 'bg-red-500',     width: '0%'},
-        1: { label: 'Invalid', color: 'bg-red-500',     width: '10%'},
-        2: { label: 'Weak',    color: 'bg-red-500',     width: '35%' },
-        3: { label: 'Okay',    color: 'bg-yellow-500',  width: '65%'},
-        4: { label: 'Okay',    color: 'bg-yellow-500',  width: '80%' },
-        5: { label: 'Strong',  color: 'bg-green-500',   width: '100%' },
+        0: { valid: false,   color: 'bg-red-500',     width: '0%'},
+        1: { valid: false, color: 'bg-red-500',     width: '10%'},
+        2: { valid: false,    color: 'bg-red-500',     width: '35%' },
+        3: { valid: false,    color: 'bg-yellow-500',  width: '65%'},
+        4: { valid: false,    color: 'bg-yellow-500',  width: '80%' },
+        5: { valid: true,  color: 'bg-green-500',   width: '100%' },
     }
     return levels[strength]
 }
@@ -40,7 +39,7 @@ const PasswordChecker = ({ password, setPassword, setIsValidPass }: PasswordChec
     const strength:StrengthLevel = getPasswordStrength(password)
 
     useEffect(() => {
-        setIsValidPass(strength.label === "Strong")
+        setIsValidPass(strength.valid)
     }, [password])
 
     return <div className='flex flex-col gap-y-4'> {/* Password Container */}
@@ -51,7 +50,7 @@ const PasswordChecker = ({ password, setPassword, setIsValidPass }: PasswordChec
         style={{width:`${strength.width}`}}
         ></div>
     </div>
-    { (password.length > 0 && strength.label !== 'Strong') &&
+    { (password.length > 0 && !strength.valid) &&
     <div className='p-4 bg-red-100 rounded-lg'>
         <div className="flex items-center space-x-2">
             <MdErrorOutline size={24}/> <p> Please check that your password includes these things: </p>
@@ -63,10 +62,6 @@ const PasswordChecker = ({ password, setPassword, setIsValidPass }: PasswordChec
         </ul>
     </div>
     }
-    {/*
-    <input type='password' placeholder = "Verify Password" value={verifyPass} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVerifyPass(e.target.value)} className='flex-1 lg:p-2 w-full border rounded'/>
-    { ((verifyPass.length > 0) && password !== verifyPass) && <p className='text-red-500'> Passwords do not match </p> }
-    */}
 </div>
 }
 

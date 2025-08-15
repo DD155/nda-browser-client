@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MdErrorOutline } from 'react-icons/md';
 import PasswordChecker from './PasswordChecker';
+
 
 const Registration: React.FC = () => {
     const [firstName, setFirsrtName] = useState<string>('')
@@ -53,11 +53,15 @@ const Registration: React.FC = () => {
                             </div>
                         </div>  }
                         <div className='flex flex-col gap-y-4'> {/* Password Container */}
-                        {isRegister &&
+                        {isRegister ?
                         <>
                             <PasswordChecker password={pass} setPassword={setPass} setIsValidPass={setIsValidPass}/>
                             <input type='password' placeholder = "Verify Password" value={verifyPass} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVerifyPass(e.target.value)} className='flex-1 lg:p-2 w-full border rounded'/>
                             { ((verifyPass.length > 0) && pass !== verifyPass) && <p className='text-red-500'> Passwords do not match </p> }
+                        </>
+                        :
+                        <>
+                            <input type='password' placeholder = "Password" value={pass} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPass(e.target.value)} className='flex-1 lg:p-2 w-full border rounded'/>
                         </>
                         }
                         </div>
