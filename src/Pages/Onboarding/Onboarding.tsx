@@ -5,7 +5,7 @@ const FADE_DURATION = 500
 
 const steps = [
     {
-        title: 'What\'s your role in medicine?',
+        title: 'What\'s your role in healthcare?',
         description: 'This helps us match you with others who understand your schedule and training stage.'
     },
     {
@@ -24,13 +24,24 @@ const Onboarding: React.FC = () => {
     const [fadeIn, setFadeIn] = useState(false)
     const [selectedProfession, setSelectedProfession] = useState<string | null>(null)
 
-    useEffect(() => {
-        const timeout = setTimeout(() => setFadeIn(true), 100)
-        return () => clearTimeout(timeout)
-    }, [started])
-
     const currentStep = steps[stepIndex]
 
+    const renderOnStep = (step: number) => {
+        switch(step) {
+            case 0: // Choose profession step
+                return (
+                    <>
+                        <div className='flex-grow flex items-center justify-center'>
+                            <ProfessionGrid
+                                selected={selectedProfession}
+                                onSelect={(id) => setSelectedProfession(id)}
+                            />
+                        </div>
+                    </>
+                )
+        }
+    }  
+    
     const handleStart = () => {
         setFadeIn(false)
         setTimeout(() => {
@@ -38,6 +49,11 @@ const Onboarding: React.FC = () => {
             setFadeIn(true)
         }, FADE_DURATION)
     }
+
+    useEffect(() => {
+        const timeout = setTimeout(() => setFadeIn(true), 100)
+        return () => clearTimeout(timeout)
+    }, [started])
 
     return (
         <div className='min-h-screen bg-gray-100 flex items-center justify-center px-4'>
@@ -65,12 +81,7 @@ const Onboarding: React.FC = () => {
                 </div>
 
                 {started && (
-                    <div className='flex-grow flex items-center justify-center'>
-                        <ProfessionGrid
-                            selected={selectedProfession}
-                            onSelect={(id) => setSelectedProfession(id)}
-                        />
-                    </div>
+                    renderOnStep(stepIndex)
                 )}
 
                 <div className='flex-grow' />

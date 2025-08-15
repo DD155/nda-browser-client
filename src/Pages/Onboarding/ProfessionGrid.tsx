@@ -1,6 +1,8 @@
 import React from 'react'
 import { MdMedicalServices, MdLocalPharmacy, MdOutlineMedicalServices, MdPerson } from 'react-icons/md'
 import { GiToothbrush } from 'react-icons/gi'
+import { TbDental } from 'react-icons/tb'
+import { LuStethoscope } from 'react-icons/lu'
 
 type Profession = {
     id: string
@@ -19,7 +21,7 @@ const professions: Profession[] = [
     {
         id: 'medicine',
         label: 'Medicine',
-        icon: <MdMedicalServices size={ICON_SIZE} />
+        icon: <LuStethoscope size={ICON_SIZE} />
     },
     {
         id: 'pharmacy',
@@ -29,7 +31,7 @@ const professions: Profession[] = [
     {
         id: 'dental',
         label: 'Dental',
-        icon: <GiToothbrush size={ICON_SIZE} />
+        icon: <TbDental size={ICON_SIZE} />
     },
     {
         id: 'nursing',
