@@ -17,7 +17,7 @@ const Registration: React.FC = () => {
         })
         .then(response => response.json())
         .then(json => console.log(json))
-    }
+    } 
 
     const validateRegistration = () => {
         if (isValidPass && verifyPass === pass) {
