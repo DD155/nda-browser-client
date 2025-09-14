@@ -47,7 +47,7 @@ const ProfessionGrid: React.FC<ProfessionGridProps> = ({ selected, onSelect }) =
                 <button
                     key={item.id}
                     onClick={() => onSelect(item.id)}
-                    className={`flex flex-col items-center justify-center border rounded-xl transition text-center shadow-md p-12 
+                    className={`flex flex-col items-center justify-center text-center transition border rounded-xl shadow-md p-12 
                         ${selected === item.id
                             ? 'bg-blue-100 border-blue-500 text-blue-700 shadow-md'
                             : 'bg-white border-gray-200 hover:bg-gray-50'}

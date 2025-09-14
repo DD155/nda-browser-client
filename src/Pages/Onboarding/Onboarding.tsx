@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ProfessionGrid from './ProfessionGrid'
+import StatusGrid from './StatusGrid'
 
 const FADE_DURATION = 500
 
@@ -18,11 +19,14 @@ const steps = [
     }
 ]
 
+
+
 const Onboarding: React.FC = () => {
     const [started, setStarted] = useState(false)
     const [stepIndex, setStepIndex] = useState(0)
     const [fadeIn, setFadeIn] = useState(false)
-    const [selectedProfession, setSelectedProfession] = useState<string | null>(null)
+    const [profession, setProfession] = useState<string | null>(null)
+    const [status, setStatus] = useState<string | null>(null)
 
     const currentStep = steps[stepIndex]
 
@@ -33,8 +37,19 @@ const Onboarding: React.FC = () => {
                     <>
                         <div className='flex-grow flex items-center justify-center'>
                             <ProfessionGrid
-                                selected={selectedProfession}
-                                onSelect={(id) => setSelectedProfession(id)}
+                                selected={profession}
+                                onSelect={(id) => setProfession(id)}
+                            />
+                        </div>
+                    </>
+                )
+            case 1: // relationship status step
+                return (
+                    <>
+                        <div className='flex flex-grow items-center justify-center'>
+                            <StatusGrid  
+                                selected={status}
+                                onSelect={(id) => setStatus(id)}
                             />
                         </div>
                     </>
